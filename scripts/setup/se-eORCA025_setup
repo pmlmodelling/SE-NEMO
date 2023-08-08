@@ -167,6 +167,7 @@ cd $CONFIG_DIR
 case "${HPC_TARG}"
   in
   archer2) ln -s /work/n01/shared/se-eORCA025 INPUTS
+           ln -s /work/n01/shared/annkat/RIVERS_CNRM/ RIVERS
            ;;
   *)       wget http://gws-access.ceda.ac.uk/public/jmmp/se-eORCA025/inputs.tar.gz
 	   tar xvfz inputs.tar.gz
@@ -179,10 +180,12 @@ cd $CONFIG_DIR/EXPREF
 ## Add ENV into runscipts
 case "${HPC_TARG}"
   in
-  archer2) sed -i "s?XXX_ENV_XXX?$REPO_DIR/scripts/env/${CMP_TARG}-${MPI_TARG}?" runscript.slurm
+  archer2) sed -i "s?XXX_ENV_XXX?$REPO_DIR/scripts/env/${CMP_TARG}-${MPI_TARG}?" runscript_GS1p0_CNRM_hist.slurm
+	   sed -i "s?XXX_ENV_XXX?$REPO_DIR/scripts/env/${CMP_TARG}-${MPI_TARG}?" runscript_GS1p0_CNRM_ssp370.slurm
            sed -i "s?XXX_ENV_XXX?$REPO_DIR/scripts/env/${CMP_TARG}-${MPI_TARG}?" runscript.mpirun
            ;;
-  *)       sed -i "s?XXX_ENV_XXX??" runscript.slurm
+  *)       sed -i "s?XXX_ENV_XXX??" runscript_GS1p0_CNRM_hist.slurm
+	   sed -i "s?XXX_ENV_XXX??" runscript_GS1p0_CNRM_ssp370.slurm
            sed -i "s?XXX_ENV_XXX??" runscript.mpirun 
            ;;
 esac
@@ -217,10 +220,10 @@ echo "Compiling nemo SE-ORCA025 Config"
 ./makenemo -m ${HPC_TARG}-${CMP_TARG}-${MPI_TARG} -r se-eORCA025 -j 16
 
 echo
-echo "  Auto-Config: SE-eORCA025"
+echo "  Auto-Config: SE-eORCA025 MissAtl climate projections"
 echo "  *****************************"
 echo
-echo "  To run the SE-eORCA025 Configuration:"
+echo "  To run the SE-eORCA025 MissAtl Configuration:"
 echo
 echo "  - cp -rP EXPREF EXP_MYRUN "
 echo "  - link the correct domain_cfg.nc "
