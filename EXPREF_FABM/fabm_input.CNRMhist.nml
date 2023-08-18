@@ -1,0 +1,62 @@
+!              !  file name   ! frequency (hours) ! variable  ! time interp. !  clim  ! 'yearly'/ ! weights  ! rotation ! land/sea mask !
+!              !              !  (if <0  months)  !   name    !   (logical)  !  (T/F) ! 'monthly' ! filename ! pairing  ! filename      !
+&variable
+   name='gelbstoff_absorption_satellite'
+   sn=         'eORCA025-CCI-ady-broadband-climatology', -1, 'ady', .false.,  .true.,   'yearly',  '',  '', ''
+/
+&variable
+   name='mole_fraction_of_carbon_dioxide_in_air'
+   sn=         'eORCA025_pCO2a_global',  -12,  'pCO2a', .false.,  .false., 'yearly', '', '', ''
+/
+&variable
+   name='N4_flux/flux'
+   sn=  'eORCA025_N_dep_ISIMIP', -1, 'nhx', .false.,  .false., 'yearly', '', '', ''
+/
+&variable
+   name='N3_flux/flux'
+   sn=  'eORCA025_N_dep_ISIMIP', -1, 'noy', .false., .false., 'yearly', '', '', ''
+/
+!&variable
+!   name='N7_flux/flux'
+!   sn=  'dust_orca_nM_eORCA1_v2', -1, 'dust', .false., .true., 'yearly', '', '', ''
+!/
+&variable
+   name='N7_flux/flux'
+   sn=  'eORCA025_Fe_dep_GESAMP.nc', -1, 'LFe_dep', .false., .true., 'yearly', '', '', ''
+/
+&riverdata
+   name='N3_n'
+   sn=   'RIVERS/CNRMhist_BGC' , 24 , 'rono3' , .true. ,  .false. ,   'yearly' ,     '',         '',        ''
+   rfac=71.4 ! 1000./14.0067 (g/s -> mmol/s)
+/
+&riverdata
+   name='N4_n'
+   sn=   'RIVERS/CNRMhist_BGC' , 24 , 'ronh4' , .true. ,  .false. ,   'yearly' ,     '',         '',        ''
+   rfac=71.4 ! 1000./14.0067 (g/s -> mmol/s)
+/
+&riverdata
+   name='N1_p'
+   sn=   'RIVERS/CNRMhist_BGC' , 24 , 'rodip' , .true. ,  .false. ,   'yearly' ,     '',         '',        ''
+   rfac=32.3 ! 1000./30.9738 (g/s -> mmol/s)
+/
+&riverdata
+   name='N5_s'
+   sn=  'RIVERS/CNRMhist_BGC' , 24 , 'rosio2' , .true. ,  .false. ,   'yearly' ,     '',         '',        ''
+   rfac=35.6 ! 1000./28.0855 (g/s -> mmol/s)
+/
+&riverdata
+   name='O3_c'
+   sn=   'RIVERS/CNRMhist_BGC' , 24 , 'rodic' , .true. ,  .false. ,   'yearly' ,     '',         '',        ''
+   rfac=83.3 ! 1000./12.011 (g/s -> mmol/s)
+/
+&riverdata
+   name='O2_o'
+   sn=   'RIVERS/CNRMhist_BGC' , 24 , 'rodoxy' , .true. ,  .false. ,   'yearly' ,     '',         '',        ''
+   rfac=62.5 ! 1000./15.9994 (g/s -> mmol/s)
+/
+&riverdata
+   name='O3_TA'
+   sn=  'RIVERS/CNRMhist_BGC' , 24 , 'rotalk' , .true. ,  .false. ,   'yearly',     '',         '',        ''
+   rfac=1. !   (mmol/s )
+/
+
