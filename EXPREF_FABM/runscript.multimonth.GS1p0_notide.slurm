@@ -176,7 +176,7 @@ fi
 
 echo $SLURM_NNODES
 
-. /work/n01/n01/yuti/SE-NEMO/scripts/env/gnu-mpich
+. XXX_ENV_XXX
 export OMP_NUM_THREADS=1
 
 chmod u+x ./myscript_wrapper.sh
