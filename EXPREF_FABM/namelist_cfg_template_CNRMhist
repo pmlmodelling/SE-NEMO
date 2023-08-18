@@ -104,7 +104,7 @@ nn_lsm=-3,
 &namsbc_flx
 /
 &namsbc_blk
-cn_dir='/work/n01/shared/nemo/FORCING/JRA/',
+cn_dir='/work/n01/shared/annkat/CNRM/',
 ln_cd_l12=.false.,
 ln_cd_l15=.false.,
 ln_coare_3p0=.false.,
@@ -115,7 +115,7 @@ ln_taudif=.false.,
 rn_efac=1.0,
 rn_pfac=1.0,
 rn_vfac=1.0,
-rn_zqt=10.0,
+rn_zqt=2.0,
 rn_zu=10.0,
 sn_cc='NOT USED',24,'CC',.false.,.true.,'yearly',
 'weights_grid03_bilinear_eorca025.nc','','',
