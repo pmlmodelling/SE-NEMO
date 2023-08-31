@@ -42,12 +42,12 @@ ln_hpg_djc='.false.' ;
 # Controls for the simulation                                          #
 ########################################################################
 ln_spin='.true.'                # Do we require a spin up phase for the ice
-nn_spin=3                       # How many years spin up
-year_st=1976                    # Start year of the simulation (ramains constant)
-year_en=2019                    # End year of this job submission
+nn_spin=0                       # How many years spin up
+year_st=1970                    # Start year of the simulation (ramains constant)
+year_en=2014                    # End year of this job submission
 offset=0                        # If rdt has changed, an offset to nn_it000 is needed
 nn_spin_cycle=$nn_spin_cycle    # Change to nn_spin+1 if year is .gt. year_st
-year=$y0                        # Change if starting job part way through simulation
+#year=$y0                        # Change if starting job part way through simulation
 nmmax=12                        # number of months to go through before submitting a new job
 
 ########################################################################
@@ -72,7 +72,7 @@ if [ -f "domain_cfg.nc" ]; then
 fi
 if [ "$ln_zps" = ".true." ]
 then
-        ln -s /work/n01/shared/yuti/se-ORCA025_domain_zps/domain_cfg_zps.closea.nc domain_cfg.nc
+        ln -s /work/n01/shared/yuti/se-ORCA025_domain_zps/domain_cfg_zps.closea.nc ./domain_cfg.nc
 else
         ln -s INPUTS/domain_cfg_mes_v2.nc ./domain_cfg.nc
 fi
@@ -250,14 +250,17 @@ do
     do
         nam="${ens%%:*}"
         jpk="${ens##*:}"
-        if [ $y0 -eq $nn_diaharm ] then
+        if [ $y0 -eq $nn_diaharm ]
+       	then
 	        ln_diaharm='.true.'
         else
 	        ln_diaharm='.false.'
         fi
         ln_rstdate='.false.'
-        if [ $y0 -eq 1970 ] then
-	        if [ $m0 -eq 1 ] then
+        if [ $y0 -eq 1970 ] 
+	then
+	        if [ $m0 -eq 1 ] 
+		then
 	          ln_rstdate='.false.'
 	        fi
         fi
@@ -267,7 +270,7 @@ do
         then
             nn_it000=1
 	        if [ $nn_spin_cycle -eq 1 ]
-            then
+                then
                 ln_rstart='.false.'	  
                 ln_rstart_top='.true.'	  
 	            ln_tide_ramp='.true.'
@@ -327,12 +330,12 @@ do
         #set physical namelist
         if [ $nn_spin_cycle -le $nn_spin ]
         then
-           sed    "s/XXX_EXP_XXX/$nam\_S$nn_spin_cycle/g" namelist_cfg_template_CNRM_hist > namelist_cfg   
+           sed    "s/XXX_EXP_XXX/$nam\_S$nn_spin_cycle/g" namelist_cfg_template_CNRMhist > namelist_cfg   
            sed -i "s/XXX_RS0_XXX/$nam\_S$(($nn_spin_cycle_rst))_$rs0\_restart/g" namelist_cfg    # restart file NAME of the member_SX_YYYY_restart
            sed "s/XXX_RS0_XXX/$nam\_S$(($nn_spin_cycle_rst))_$rs0\_restart_ice/g" namelist_ice_cfg_template > namelist_ice_cfg
            sed "s/XXX_RS0_XXX/$nam\_S$(($nn_spin_cycle_rst))_$rs0\_restart_trc/g" namelist_top_template > namelist_top_cfg
         else
-            sed    "s/XXX_EXP_XXX/$nam/g" namelist_cfg_template_CNRM_hist > namelist_cfg
+            sed    "s/XXX_EXP_XXX/$nam/g" namelist_cfg_template_CNRMhist > namelist_cfg
             if [ $y0 -eq $year_st ] && [ $m0 -eq 1 ]
             then
                sed -i "s/XXX_RS0_XXX/$nam\_S$(($nn_spin_cycle_rst))_$rs0\_restart/g" namelist_cfg  
