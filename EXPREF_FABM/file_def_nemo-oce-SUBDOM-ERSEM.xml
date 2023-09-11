@@ -1,0 +1,227 @@
+<?xml version="1.0"?>
+
+<!--
+============================================================================================================
+=                                           output files definition                                        =
+=                                            Define your own filesfor ocean dynamics context                                         =
+=                                         put the variables you want...                                    =
+============================================================================================================
+    -->
+   
+    <file_definition type="one_file" name="@expname@_@freq@_@startdate@_@enddate@" sync_freq="1d" min_digits="4">
+    
+      <file_group id="1ts" output_freq="1ts"  output_level="10" enabled=".TRUE."/> <!-- 1 time step files -->
+
+      <file_group id="1h" output_freq="1h"  output_level="10" enabled=".TRUE."/> <!-- 1h files -->
+
+      <file_group id="2h" output_freq="2h"  output_level="10" enabled=".TRUE."/> <!-- 2h files -->
+
+      <file_group id="3h" output_freq="3h"  output_level="10" enabled=".TRUE."/> <!-- 3h files -->     
+
+      <file_group id="4h" output_freq="4h"  output_level="10" enabled=".TRUE."/> <!-- 4h files -->
+
+      <file_group id="6h" output_freq="6h"  output_level="10" enabled=".TRUE."/> <!-- 6h files -->     
+
+      <file_group id="1d" output_freq="1d"  output_level="10" enabled=".TRUE."/>  <!-- 1d files -->
+
+      <file_group id="5d" output_freq="5d"  output_level="10" enabled=".TRUE."/>  <!--5d files-->
+
+      <file_group id="1m" output_freq="1mo" output_level="10" split_freq="1mo" enabled=".TRUE."> <!-- real monthly files -->
+
+        <file id="file16" name_suffix="_amm7" description="amm7 ERSEM monthly">
+            <field field_ref="N1_p" operation="average" grid_ref="amm7"/>
+            <field field_ref="N3_n" operation="average" grid_ref="amm7"/>
+            <field field_ref="N4_n" operation="average" grid_ref="amm7"/>
+            <field field_ref="N5_s" operation="average" grid_ref="amm7"/>
+            <field field_ref="N7_f" operation="average" grid_ref="amm7"/>
+            <field field_ref="O2_o" operation="average" grid_ref="amm7"/>
+            <field field_ref="O3_c" operation="average" grid_ref="amm7"/>
+            <field field_ref="O3_TA" operation="average" grid_ref="amm7"/>
+            <field field_ref="P1_c" operation="average" grid_ref="amm7"/>
+            <field field_ref="P1_n" operation="average" grid_ref="amm7"/>
+            <field field_ref="P1_p" operation="average" grid_ref="amm7"/>
+            <field field_ref="P1_s" operation="average" grid_ref="amm7"/>
+	    <field field_ref="P1_f" operation="average" grid_ref="amm7"/>
+	    <field field_ref="P1_Chl" operation="average" grid_ref="amm7"/>
+            <field field_ref="P2_c" operation="average" grid_ref="amm7"/>
+            <field field_ref="P2_n" operation="average" grid_ref="amm7"/>
+            <field field_ref="P2_p" operation="average" grid_ref="amm7"/>
+            <field field_ref="P2_f" operation="average" grid_ref="amm7"/>
+            <field field_ref="P2_Chl" operation="average" grid_ref="amm7"/>
+            <field field_ref="P3_c" operation="average" grid_ref="amm7"/>
+            <field field_ref="P3_n" operation="average" grid_ref="amm7"/>
+            <field field_ref="P3_p" operation="average" grid_ref="amm7"/>
+            <field field_ref="P3_f" operation="average" grid_ref="amm7"/>
+            <field field_ref="P3_Chl" operation="average" grid_ref="amm7"/>
+            <field field_ref="P4_c" operation="average" grid_ref="amm7"/>
+            <field field_ref="P4_n" operation="average" grid_ref="amm7"/>
+            <field field_ref="P4_p" operation="average" grid_ref="amm7"/>
+            <field field_ref="P4_f" operation="average" grid_ref="amm7"/>
+            <field field_ref="P4_Chl" operation="average" grid_ref="amm7"/>
+            <field field_ref="Z4_c" operation="average" grid_ref="amm7"/>
+            <field field_ref="Z5_c" operation="average" grid_ref="amm7"/>
+            <field field_ref="Z5_n" operation="average" grid_ref="amm7"/>
+            <field field_ref="Z5_p" operation="average" grid_ref="amm7"/>
+            <field field_ref="Z6_c" operation="average" grid_ref="amm7"/>
+            <field field_ref="Z6_n" operation="average" grid_ref="amm7"/>
+            <field field_ref="Z6_p" operation="average" grid_ref="amm7"/>
+            <field field_ref="B1_c" operation="average" grid_ref="amm7"/>
+            <field field_ref="B1_n" operation="average" grid_ref="amm7"/>
+            <field field_ref="B1_p" operation="average" grid_ref="amm7"/>
+            <field field_ref="R1_c" operation="average" grid_ref="amm7"/>
+            <field field_ref="R1_n" operation="average" grid_ref="amm7"/>
+            <field field_ref="R1_p" operation="average" grid_ref="amm7"/>
+            <field field_ref="R2_c" operation="average" grid_ref="amm7"/>
+            <field field_ref="R3_c" operation="average" grid_ref="amm7"/>
+            <field field_ref="R4_c" operation="average" grid_ref="amm7"/>
+            <field field_ref="R4_n" operation="average" grid_ref="amm7"/>
+            <field field_ref="R4_p" operation="average" grid_ref="amm7"/>
+            <field field_ref="R4_f" operation="average" grid_ref="amm7"/>
+            <field field_ref="R6_c" operation="average" grid_ref="amm7"/>
+            <field field_ref="R6_n" operation="average" grid_ref="amm7"/>
+            <field field_ref="R6_p" operation="average" grid_ref="amm7"/>
+            <field field_ref="R6_s" operation="average" grid_ref="amm7"/>
+            <field field_ref="R6_f" operation="average" grid_ref="amm7"/>
+            <field field_ref="R8_c" operation="average" grid_ref="amm7"/>
+            <field field_ref="R8_n" operation="average" grid_ref="amm7"/>
+            <field field_ref="R8_p" operation="average" grid_ref="amm7"/>
+            <field field_ref="R8_s" operation="average" grid_ref="amm7"/>
+        </file>
+
+	<file id="file17" name_suffix="_sanh1" description="sanh1 ERSEM monthly">
+            <field field_ref="N1_p" operation="average" grid_ref="sanh1"/>
+            <field field_ref="N3_n" operation="average" grid_ref="sanh1"/>
+            <field field_ref="N4_n" operation="average" grid_ref="sanh1"/>
+            <field field_ref="N5_s" operation="average" grid_ref="sanh1"/>
+            <field field_ref="N7_f" operation="average" grid_ref="sanh1"/>
+            <field field_ref="O2_o" operation="average" grid_ref="sanh1"/>
+            <field field_ref="O3_c" operation="average" grid_ref="sanh1"/>
+            <field field_ref="O3_TA" operation="average" grid_ref="sanh1"/>
+            <field field_ref="P1_c" operation="average" grid_ref="sanh1"/>
+            <field field_ref="P1_n" operation="average" grid_ref="sanh1"/>
+            <field field_ref="P1_p" operation="average" grid_ref="sanh1"/>
+            <field field_ref="P1_s" operation="average" grid_ref="sanh1"/>
+            <field field_ref="P1_f" operation="average" grid_ref="sanh1"/>
+            <field field_ref="P1_Chl" operation="average" grid_ref="sanh1"/>
+            <field field_ref="P2_c" operation="average" grid_ref="sanh1"/>
+            <field field_ref="P2_n" operation="average" grid_ref="sanh1"/>
+            <field field_ref="P2_p" operation="average" grid_ref="sanh1"/>
+            <field field_ref="P2_f" operation="average" grid_ref="sanh1"/>
+            <field field_ref="P2_Chl" operation="average" grid_ref="sanh1"/>
+            <field field_ref="P3_c" operation="average" grid_ref="sanh1"/>
+            <field field_ref="P3_n" operation="average" grid_ref="sanh1"/>
+            <field field_ref="P3_p" operation="average" grid_ref="sanh1"/>
+            <field field_ref="P3_f" operation="average" grid_ref="sanh1"/>
+            <field field_ref="P3_Chl" operation="average" grid_ref="sanh1"/>
+            <field field_ref="P4_c" operation="average" grid_ref="sanh1"/>
+            <field field_ref="P4_n" operation="average" grid_ref="sanh1"/>
+            <field field_ref="P4_p" operation="average" grid_ref="sanh1"/>
+            <field field_ref="P4_f" operation="average" grid_ref="sanh1"/>
+            <field field_ref="P4_Chl" operation="average" grid_ref="sanh1"/>
+            <field field_ref="Z4_c" operation="average" grid_ref="sanh1"/>
+            <field field_ref="Z5_c" operation="average" grid_ref="sanh1"/>
+            <field field_ref="Z5_n" operation="average" grid_ref="sanh1"/>
+            <field field_ref="Z5_p" operation="average" grid_ref="sanh1"/>
+            <field field_ref="Z6_c" operation="average" grid_ref="sanh1"/>
+            <field field_ref="Z6_n" operation="average" grid_ref="sanh1"/>
+            <field field_ref="Z6_p" operation="average" grid_ref="sanh1"/>
+            <field field_ref="B1_c" operation="average" grid_ref="sanh1"/>
+            <field field_ref="B1_n" operation="average" grid_ref="sanh1"/>
+            <field field_ref="B1_p" operation="average" grid_ref="sanh1"/>
+            <field field_ref="R1_c" operation="average" grid_ref="sanh1"/>
+            <field field_ref="R1_n" operation="average" grid_ref="sanh1"/>
+            <field field_ref="R1_p" operation="average" grid_ref="sanh1"/>
+            <field field_ref="R2_c" operation="average" grid_ref="sanh1"/>
+            <field field_ref="R3_c" operation="average" grid_ref="sanh1"/>
+            <field field_ref="R4_c" operation="average" grid_ref="sanh1"/>
+            <field field_ref="R4_n" operation="average" grid_ref="sanh1"/>
+            <field field_ref="R4_p" operation="average" grid_ref="sanh1"/>
+            <field field_ref="R4_f" operation="average" grid_ref="sanh1"/>
+            <field field_ref="R6_c" operation="average" grid_ref="sanh1"/>
+            <field field_ref="R6_n" operation="average" grid_ref="sanh1"/>
+            <field field_ref="R6_p" operation="average" grid_ref="sanh1"/>
+            <field field_ref="R6_s" operation="average" grid_ref="sanh1"/>
+            <field field_ref="R6_f" operation="average" grid_ref="sanh1"/>
+            <field field_ref="R8_c" operation="average" grid_ref="sanh1"/>
+            <field field_ref="R8_n" operation="average" grid_ref="sanh1"/>
+            <field field_ref="R8_p" operation="average" grid_ref="sanh1"/>
+            <field field_ref="R8_s" operation="average" grid_ref="sanh1"/>
+        </file>
+
+	<file id="file18" name_suffix="_sanh2" description="sanh2 ERSEM monthly">
+            <field field_ref="N1_p" operation="average" grid_ref="sanh2"/>
+            <field field_ref="N3_n" operation="average" grid_ref="sanh2"/>
+            <field field_ref="N4_n" operation="average" grid_ref="sanh2"/>
+            <field field_ref="N5_s" operation="average" grid_ref="sanh2"/>
+            <field field_ref="N7_f" operation="average" grid_ref="sanh2"/>
+            <field field_ref="O2_o" operation="average" grid_ref="sanh2"/>
+            <field field_ref="O3_c" operation="average" grid_ref="sanh2"/>
+            <field field_ref="O3_TA" operation="average" grid_ref="sanh2"/>
+            <field field_ref="P1_c" operation="average" grid_ref="sanh2"/>
+            <field field_ref="P1_n" operation="average" grid_ref="sanh2"/>
+            <field field_ref="P1_p" operation="average" grid_ref="sanh2"/>
+            <field field_ref="P1_s" operation="average" grid_ref="sanh2"/>
+            <field field_ref="P1_f" operation="average" grid_ref="sanh2"/>
+            <field field_ref="P1_Chl" operation="average" grid_ref="sanh2"/>
+            <field field_ref="P2_c" operation="average" grid_ref="sanh2"/>
+            <field field_ref="P2_n" operation="average" grid_ref="sanh2"/>
+            <field field_ref="P2_p" operation="average" grid_ref="sanh2"/>
+            <field field_ref="P2_f" operation="average" grid_ref="sanh2"/>
+            <field field_ref="P2_Chl" operation="average" grid_ref="sanh2"/>
+            <field field_ref="P3_c" operation="average" grid_ref="sanh2"/>
+            <field field_ref="P3_n" operation="average" grid_ref="sanh2"/>
+            <field field_ref="P3_p" operation="average" grid_ref="sanh2"/>
+            <field field_ref="P3_f" operation="average" grid_ref="sanh2"/>
+            <field field_ref="P3_Chl" operation="average" grid_ref="sanh2"/>
+            <field field_ref="P4_c" operation="average" grid_ref="sanh2"/>
+            <field field_ref="P4_n" operation="average" grid_ref="sanh2"/>
+            <field field_ref="P4_p" operation="average" grid_ref="sanh2"/>
+            <field field_ref="P4_f" operation="average" grid_ref="sanh2"/>
+            <field field_ref="P4_Chl" operation="average" grid_ref="sanh2"/>
+            <field field_ref="Z4_c" operation="average" grid_ref="sanh2"/>
+            <field field_ref="Z5_c" operation="average" grid_ref="sanh2"/>
+            <field field_ref="Z5_n" operation="average" grid_ref="sanh2"/>
+            <field field_ref="Z5_p" operation="average" grid_ref="sanh2"/>
+            <field field_ref="Z6_c" operation="average" grid_ref="sanh2"/>
+            <field field_ref="Z6_n" operation="average" grid_ref="sanh2"/>
+            <field field_ref="Z6_p" operation="average" grid_ref="sanh2"/>
+            <field field_ref="B1_c" operation="average" grid_ref="sanh2"/>
+            <field field_ref="B1_n" operation="average" grid_ref="sanh2"/>
+            <field field_ref="B1_p" operation="average" grid_ref="sanh2"/>
+            <field field_ref="R1_c" operation="average" grid_ref="sanh2"/>
+            <field field_ref="R1_n" operation="average" grid_ref="sanh2"/>
+            <field field_ref="R1_p" operation="average" grid_ref="sanh2"/>
+            <field field_ref="R2_c" operation="average" grid_ref="sanh2"/>
+            <field field_ref="R3_c" operation="average" grid_ref="sanh2"/>
+            <field field_ref="R4_c" operation="average" grid_ref="sanh2"/>
+            <field field_ref="R4_n" operation="average" grid_ref="sanh2"/>
+            <field field_ref="R4_p" operation="average" grid_ref="sanh2"/>
+            <field field_ref="R4_f" operation="average" grid_ref="sanh2"/>
+            <field field_ref="R6_c" operation="average" grid_ref="sanh2"/>
+            <field field_ref="R6_n" operation="average" grid_ref="sanh2"/>
+            <field field_ref="R6_p" operation="average" grid_ref="sanh2"/>
+            <field field_ref="R6_s" operation="average" grid_ref="sanh2"/>
+            <field field_ref="R6_f" operation="average" grid_ref="sanh2"/>
+            <field field_ref="R8_c" operation="average" grid_ref="sanh2"/>
+            <field field_ref="R8_n" operation="average" grid_ref="sanh2"/>
+            <field field_ref="R8_p" operation="average" grid_ref="sanh2"/>
+            <field field_ref="R8_s" operation="average" grid_ref="sanh2"/>
+        </file>
+
+      </file_group>
+
+      <file_group id="2m" output_freq="2mo" output_level="10" enabled=".TRUE."/> <!-- real 2m files -->
+      <file_group id="3m" output_freq="3mo" output_level="10" enabled=".TRUE."/> <!-- real 3m files -->
+      <file_group id="4m" output_freq="4mo" output_level="10" enabled=".TRUE."/> <!-- real 4m files -->
+      <file_group id="6m" output_freq="6mo" output_level="10" enabled=".TRUE."/> <!-- real 6m files -->
+
+      <file_group id="1y"  output_freq="1y" output_level="10" enabled=".FALSE."/> <!-- real 1y files -->
+      <file_group id="2y"  output_freq="2y" output_level="10" enabled=".TRUE."/> <!-- real 2y files -->
+      <file_group id="5y"  output_freq="5y" output_level="10" enabled=".TRUE."/> <!-- real 5y files -->
+      <file_group id="10y" output_freq="10y" output_level="10" enabled=".TRUE."/> <!-- real 10y files -->
+
+    </file_definition>
+    
+
+
+

@@ -20,6 +20,21 @@
          <domain domain_ref="grid_T" />
          <axis axis_ref="deptht" />
        </grid>
+       <!--  -->
+       <grid id="amm7">
+         <domain domain_ref="amm7" />
+         <axis axis_ref="deptht" />
+       </grid>
+        <!--  -->
+       <grid id="sanh1">
+         <domain domain_ref="sanh1" />
+         <axis axis_ref="deptht" />
+       </grid>
+         <!--  -->
+       <grid id="sanh2">
+         <domain domain_ref="sanh2" />
+         <axis axis_ref="deptht" />
+       </grid>
         <!--  -->
        <grid id="grid_U_2D" >
          <domain domain_ref="grid_U" />
