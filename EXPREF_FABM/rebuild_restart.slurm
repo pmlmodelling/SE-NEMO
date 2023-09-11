@@ -17,13 +17,13 @@
 # submit with:
 # sbatch --export=ITER=4464,SPIN=1 rebuild_restart.slurm
 
-#rsync -aP /work/n01/n01/gig/eORCA025/rebuild_nemo.exe .
+#rsync -aP /work/n01/n01/annkat/TOOLS_NEMO/r4.0.4/tools/REBUILD_NEMO/BLD/bin/rebuild_nemo.exe .
 
 #module load PrgEnv-gnu
 module swap craype-network-ofi craype-network-ucx
 module swap cray-mpich cray-mpich-ucx
-module load cray-hdf5-parallel/1.12.0.7
-module load cray-netcdf-hdf5parallel/4.7.4.7
+module load cray-hdf5-parallel/1.12.2.1
+module load cray-netcdf-hdf5parallel/4.9.0.1
 
 CURR_DIR=$PWD
 SERIAL=$(printf "%08d" $ITER)
@@ -38,23 +38,23 @@ rm nam_rebuild
 
 if [ $SPIN -ge 4 ] #NB: hardcoded 3y spin cycle
 then
-  ndom=$(ls -1 $INDIR/SENEMO_"$SERIAL"_restart_trc_????.nc | wc -l)
-  echo -e "&nam_rebuild\nfilebase='"$INDIR"/SENEMO_"$SERIAL"_restart_trc'\nndomain=$ndom\n/" >> nam_rebuild_trc
-  echo -e "&nam_rebuild\nfilebase='"$INDIR"/SENEMO_"$SERIAL"_restart_ice'\nndomain=$ndom\n/" >> nam_rebuild_ice
-  echo -e "&nam_rebuild\nfilebase='"$INDIR"/SENEMO_"$SERIAL"_restart'\nndomain=$ndom\n/" >> nam_rebuild
+  ndom=$(ls -1 $INDIR/"$NAM"_"$SERIAL"_restart_trc_????.nc | wc -l)
+  echo -e "&nam_rebuild\nfilebase='"$INDIR"/"$NAM"_"$SERIAL"_restart_trc'\nndomain=$ndom\n/" >> nam_rebuild_trc
+  echo -e "&nam_rebuild\nfilebase='"$INDIR"/"$NAM"_"$SERIAL"_restart_ice'\nndomain=$ndom\n/" >> nam_rebuild_ice
+  echo -e "&nam_rebuild\nfilebase='"$INDIR"/"$NAM"_"$SERIAL"_restart'\nndomain=$ndom\n/" >> nam_rebuild
 else
-  ndom=$(ls -1 $INDIR/SENEMO_S"$SPIN"_"$SERIAL"_restart_trc_????.nc | wc -l)
-  echo -e "&nam_rebuild\nfilebase='"$INDIR"/SENEMO_S"$SPIN"_"$SERIAL"_restart_trc'\nndomain=$ndom\n/" >> nam_rebuild_trc
-  echo -e "&nam_rebuild\nfilebase='"$INDIR"/SENEMO_S"$SPIN"_"$SERIAL"_restart_ice'\nndomain=$ndom\n/" >> nam_rebuild_ice
-  echo -e "&nam_rebuild\nfilebase='"$INDIR"/SENEMO_S"$SPIN"_"$SERIAL"_restart'\nndomain=$ndom\n/" >> nam_rebuild
+  ndom=$(ls -1 $INDIR/"$NAM"_S"$SPIN"_"$SERIAL"_restart_trc_????.nc | wc -l)
+  echo -e "&nam_rebuild\nfilebase='"$INDIR"/"$NAM"_S"$SPIN"_"$SERIAL"_restart_trc'\nndomain=$ndom\n/" >> nam_rebuild_trc
+  echo -e "&nam_rebuild\nfilebase='"$INDIR"/"$NAM"_S"$SPIN"_"$SERIAL"_restart_ice'\nndomain=$ndom\n/" >> nam_rebuild_ice
+  echo -e "&nam_rebuild\nfilebase='"$INDIR"/"$NAM"_S"$SPIN"_"$SERIAL"_restart'\nndomain=$ndom\n/" >> nam_rebuild
 fi
 
 echo $SERIAL
 
-rm timing_rbld
-touch timing_rbld
-echo start: >> timing_rbld
-ls -lhrt timing_rbld >> timing_rbld
+rm timing_rbld_$SERIAL
+touch timing_rbld_$SERIAL
+echo start: >> timing_rbld_$SERIAL
+ls -lhrt timing_rbld_$SERIAL >> timing_rbld_$SERIAL
 
 
 # THIS RUNS!
@@ -64,8 +64,8 @@ srun --distribution=block:block --hint=nomultithread --unbuffered ./rebuild_nemo
 srun --distribution=block:block --hint=nomultithread --unbuffered ./rebuild_nemo.exe nam_rebuild_ice
 srun --distribution=block:block --hint=nomultithread --unbuffered ./rebuild_nemo.exe nam_rebuild
 
-touch timing_rbld
-echo rebuild completed >> timing_rbld
-ls -lhrt timing_rbld >> timing_rbld
+touch timing_rbld_$SERIAL
+echo rebuild completed >> timing_rbld_$SERIAL
+ls -lhrt timing_rbld_$SERIAL >> timing_rbld_$SERIAL
 
 echo Done.

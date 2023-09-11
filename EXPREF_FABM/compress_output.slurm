@@ -17,17 +17,17 @@ INDIR=$PWD
 
 mkdir -p $ARCHIVEDIR
 
-rm timing_compr_out.txt
-touch timing_compr_out.txt
-echo start: >> timing_compr_out.txt
-ls -lhrt timing_compr_out.txt >> timing_compr_out.txt
+#rm timing_compr_out.txt
+#touch timing_compr_out.txt
+#echo start: >> timing_compr_out.txt
+#ls -lhrt timing_compr_out.txt >> timing_compr_out.txt
 
 if [ $SPIN -ge 4 ] #NB: hardcoded 3y spin cycle 
 then
-  regex=SENEMO_1?_$y0$m0str*.nc
-  regex5=SENEMO_5?_$y0$m0str*.nc
+  regex=${nam}_1?_$y0$m0str*.nc
+  regex5=${nam}_5?_$y0$m0str*.nc
 else
-  regex=SENEMO_S?_[15]?_$y0$m0str*.nc
+  regex=${nam}_S?_[15]?_$y0$m0str*.nc
 fi
 
 for file in $regex 
@@ -45,6 +45,6 @@ do
 done
 
 
-touch timing_compr_out.txt
-echo end: >> timing_compr_out.txt
-ls -lhrt timing_compr_out.txt >> timing_compr_out.txt
+#touch timing_compr_out.txt
+#echo end: >> timing_compr_out.txt
+#ls -lhrt timing_compr_out.txt >> timing_compr_out.txt
