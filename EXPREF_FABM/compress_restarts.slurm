@@ -2,7 +2,7 @@
 #SBATCH --job-name=CMPR
 #SBATCH --output=out-CMPR-%j.out
 #SBATCH --time=06:00:00
-#SBATCH --account=n01-sanh
+#SBATCH --account=n01-pml
 ##SBATCH --partition=serial
 ##SBATCH --qos=serial
 #SBATCH --partition=standard
