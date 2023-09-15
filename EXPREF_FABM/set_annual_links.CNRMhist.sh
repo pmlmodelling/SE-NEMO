@@ -6,7 +6,8 @@
 #INPUT_PATH=/work/n01/n01/...
 INDIR_Ndep=/work/n01/shared/yuti/se-ORCA025_Ndep/
 INDIR_Fedep=/work/n01/shared/yuti/se-ORCA025_Fedep/
-INDIR_pCO2a=/work/n01/shared/yuti/se-ORCA025_pCO2a/
+#INDIR_pCO2a=/work/n01/shared/yuti/se-ORCA025_pCO2a/
+INDIR_pCO2a=/work/n01/shared/yuti/se-ORCA025_pCO2a/CMIP6/
 INDIR_ADY=/work/n01/shared/yuti/se-ORCA025_ADY_clim/
 INDIR_RIVERS=/work/n01/shared/yuti/se-ORCA025_CNRM_hist/
 
@@ -33,8 +34,8 @@ ln -sf $INDIR_RIVERS/CNRM_hist_river_BGC_y${yb}.nc ${RUNPATH}/RIVERS/CNRMhist_BG
 ln -sf $INDIR_RIVERS/runoff_socoefr_v2.nc  ./RIVERS/runoff_socoefr_v2.nc
 
 
-ln -sf  $INDIR_pCO2a/eORCA025_v2_pCO2a_global_y${yn}.nc $RUNPATH/eORCA025_pCO2a_global_y${yn}.nc
-ln -sf  $INDIR_pCO2a/eORCA025_v2_pCO2a_global_y${yb}.nc $RUNPATH/eORCA025_pCO2a_global_y${yb}.nc
-ln -sf  $INDIR_pCO2a/eORCA025_v2_pCO2a_global_y${ya}.nc $RUNPATH/eORCA025_pCO2a_global_y${ya}.nc
+ln -sf  $INDIR_pCO2a/eORCA025_r015-r010_007_004v2_pCO2a_global_CMIP6_hist_y${yn}.nc $RUNPATH/eORCA025_pCO2a_global_y${yn}.nc
+ln -sf  $INDIR_pCO2a/eORCA025_r015-r010_007_004v2_pCO2a_global_CMIP6_hist_y${yb}.nc $RUNPATH/eORCA025_pCO2a_global_y${yb}.nc
+ln -sf  $INDIR_pCO2a/eORCA025_r015-r010_007_004v2_pCO2a_global_CMIP6_hist_y${ya}.nc $RUNPATH/eORCA025_pCO2a_global_y${ya}.nc
 
 ln -sf  $INDIR_ADY/eORCA025_r015-r010_007_004v2_ady.nc ${RUNPATH}/eORCA025-CCI-ady-broadband-climatology.nc
