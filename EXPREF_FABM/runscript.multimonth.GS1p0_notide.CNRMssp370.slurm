@@ -1,6 +1,7 @@
 #!/bin/bash
 #SBATCH --job-name=se-025ERSEM
 #SBATCH --output=out-se025-%j.out
+##SBATCH --time=01:00:00
 #SBATCH --time=04:30:00
 ##SBATCH --time=16:00:00
 ##SBATCH --time=00:15:00
@@ -19,10 +20,13 @@ export UCX_IB_REG_METHODS=direct
 RUNDIR=$PWD
 
 # SUBMIT WITH:
-# "sbatch --export=y0=1976,m0=1,nn_spin_cycle=0 runscript.multimonth.slurm"
+# "sbatch --export=y0=2024,m0=1,nn_spin_cycle=6 runscript.multimonth.GS1p0_notide.CNRMssp370.slurm"
+# "sbatch --export=y0=2016,m0=1,nn_spin_cycle=6 runscript.multimonth.GS1p0_notide.CNRMssp370.slurm"
 # NB: m0 is month to run first, 
 #     nn_spin_cycle is spin cycle of the previous month (i.e. that tagged in the restart)
 #     After the spin cycle it should be sufficient to have any nn_spin_cycle>=nn_spin+1 (>=4)
+# NB: when submitting manually after the spincycle put nn_spin_cycle >=4
+#     else compress_output.sh does not work
 
 
 #################### nemo runscript options ############################
@@ -31,7 +35,7 @@ RUNDIR=$PWD
 rn_rdt=1200          ; ln_zps='.true.'       ; ln_tmx_itf='.true.'
 ln_bt_auto='.true.' ; rn_bt_cmax=0.8        ; nn_baro=30
 nn_mxlice=3         ; nn_z0_ice=1           ; ln_rnf_new='.true.'
-ln_rstdate='.false.' ; ln_shlat2d='.false.'  ; nn_diaharm=3333
+ln_rstdate='.true.' ; ln_shlat2d='.false.'  ; nn_diaharm=3333
 rn_Cd0=1.0e-3       ; ln_loglayer='.false.' ; ln_tide='.false.'
 ln_boost='.true.'   ; ln_gls='.false.'       ; ln_int_wave_drag='.false.' 
 ln_hpg_djc='.false.' ;
@@ -42,13 +46,14 @@ ln_hpg_djc='.false.' ;
 # Controls for the simulation                                          #
 ########################################################################
 ln_spin='.true.'                # Do we require a spin up phase for the ice
-nn_spin=3                       # How many years spin up
+nn_spin=0                       # How many years spin up
 year_st=1976                    # Start year of the simulation (ramains constant)
-year_en=2019                    # End year of this job submission
+year_en=2070                    # End year of this job submission
+year_end_hist=2014              # Last year of historical
 offset=0                        # If rdt has changed, an offset to nn_it000 is needed
 nn_spin_cycle=$nn_spin_cycle    # Change to nn_spin+1 if year is .gt. year_st
-year=$y0                        # Change if starting job part way through simulation
-nmmax=12                        # number of months to go through before submitting a new job
+#year=$y0                        # Change if starting job part way through simulation
+nmmax=6                        # number of months to go through before submitting a new job
 
 ########################################################################
 
@@ -63,7 +68,7 @@ fi
 
 if [ -f "fabm_input.nml" ]; then
         rm fabm_input.nml
-        ln -s fabm_input.CNRMhist.nml fabm_input.nml
+        ln -s fabm_input.CNRMssp370.nml fabm_input.nml
 fi
 
 # this has been added to ensure that right domain file is linked
@@ -72,7 +77,7 @@ if [ -f "domain_cfg.nc" ]; then
 fi
 if [ "$ln_zps" = ".true." ]
 then
-        ln -s /work/n01/shared/yuti/se-ORCA025_domain_zps/domain_cfg_zps.closea.nc domain_cfg.nc
+        ln -s /work/n01/shared/yuti/se-ORCA025_domain_zps/domain_cfg_zps.closea.nc ./domain_cfg.nc
 else
         ln -s INPUTS/domain_cfg_mes_v2.nc ./domain_cfg.nc
 fi
@@ -171,9 +176,9 @@ fi
 if [ "$ln_rnf_new" = ".true." ]
 then
 	#cn_dir=""
-	sn_rnf="'CNRMhist_BGC',24,'rorunoff',.true.,.false.,'yearly'"
+	sn_rnf="'river_BGC',24,'rorunoff',.true.,.false.,'yearly'"
 	#sn_cnf="'JRA_BGC',0,'socoefr',.false.,.false.,'yearly'"
-	sn_dep="'CNRMhist_BGC',24,'rodepth',.false.,.false.,'yearly'"
+	sn_dep="'river_BGC',24,'rodepth',.false.,.false.,'yearly'"
 else
 	cn_dir="INPUTS"
 	sn_rnf="'runoff_1m_nomask.nc',-1,'sornficb',.true.,.true.,'yearly'"
@@ -182,7 +187,8 @@ fi
 
 echo $SLURM_NNODES
 
-. XXX_ENV_XXX
+#. /home/n01/n01/gig/git/SE-NEMO_MA-Clim/scripts/env/gnu-mpich
+. /work/n01/n01/gig/eORCA025/gnu-mpich
 export OMP_NUM_THREADS=1
 
 chmod u+x ./myscript_wrapper.sh
@@ -194,7 +200,15 @@ nsstart=$(date -d "$year_st-01-01 00:00:00 GMT" +%s) #seconds since EPOCH for to
 
 
 #set annual links for ERSEM
-./set_annual_links.CNRMhist.sh $y0
+#also according on if is hist or ssp370
+if [ $y0 -le $year_end_hist ]
+then
+    ./set_annual_links.CNRMhist.sh $y0
+else
+    rm fabm_input.nml
+    ln -s fabm_input.CNRMssp370.nml fabm_input.nml
+    ./set_annual_links.CNRMssp370.sh $y0
+fi
 
 stopflag=0
 
@@ -202,10 +216,10 @@ nm=1
 while [ $y0 -le $year_en ] && [ $nm -le $nmmax ]
 do
 
-    rm timing_$nm.txt
-    touch timing_$nm.txt
-    echo start: >> timing_$nm.txt
-    ls -lhrt timing_$nm.txt >> timing_$nm.txt
+    #rm timing_$nm.txt
+    #touch timing_$nm.txt
+    #echo start: >> timing_$nm.txt
+    #ls -lhrt timing_$nm.txt >> timing_$nm.txt
 
     #Compute previous and next month:
     mp=$(( $m0 + 1 ))
@@ -243,37 +257,40 @@ do
     mmstr=$(printf %02d $mm)
 
     # Array pretending to be a Pythonic dictionary {EXP_NAME:NZ}
-    ARRAY=( "CNRM_hist:75"
+    ARRAY=( "CNRM_ssp370:75"
           )
 
     for ens in "${ARRAY[@]}"
     do
         nam="${ens%%:*}"
         jpk="${ens##*:}"
-        if [ $y0 -eq $nn_diaharm ] then
+        if [ $y0 -eq $nn_diaharm ]
+       	then
 	        ln_diaharm='.true.'
         else
 	        ln_diaharm='.false.'
         fi
-        ln_rstdate='.false.'
-        if [ $y0 -eq 1970 ] then
-	        if [ $m0 -eq 1 ] then
-	          ln_rstdate='.false.'
+        ln_rstdate='.true.'
+        if [ $y0 -eq $year_st ] 
+	then
+	        if [ $m0 -eq 1 ] 
+		then
+	          ln_rstdate='.true.'
 	        fi
         fi
         
         # TODO need to change 1970 to first year of BGC
-        if [ $y0 -eq 1970 ]
+        if [ $y0 -eq $year_st ]
         then
             nn_it000=1
 	        if [ $nn_spin_cycle -eq 1 ]
-            then
-                ln_rstart='.false.'	  
-                ln_rstart_top='.true.'	  
+                then
+                    ln_rstart='.false.'	  
+                    ln_rstart_top='.true.'	  
 	            ln_tide_ramp='.true.'
 	        else
-                ln_rstart='.true.'	  
-                ln_rstart_top='.true.'
+                    ln_rstart='.true.'	  
+                    ln_rstart_top='.true.'
 	            ln_tide_ramp='.false.'
             fi
 	        nn_rstctl=0
@@ -315,7 +332,8 @@ do
         echo nn_it000: $nn_it000 !!!!!
 
         nn_itrst=$(( nn_it000 - 1 ))
-        rs0=$(printf "%08d" $nn_itrst)
+        #rs0=$(printf "%08d" $nn_itrst)
+	rs0=${y0}${m0str}01
         echo rs0: $rs0 !!!!
 
         nn_spin_cycle_rst=$nn_spin_cycle
@@ -327,17 +345,26 @@ do
         #set physical namelist
         if [ $nn_spin_cycle -le $nn_spin ]
         then
-           sed    "s/XXX_EXP_XXX/$nam\_S$nn_spin_cycle/g" namelist_cfg_template_CNRM_hist > namelist_cfg   
+           sed    "s/XXX_EXP_XXX/$nam\_S$nn_spin_cycle/g" namelist_cfg_template_CNRMssp370 > namelist_cfg   
            sed -i "s/XXX_RS0_XXX/$nam\_S$(($nn_spin_cycle_rst))_$rs0\_restart/g" namelist_cfg    # restart file NAME of the member_SX_YYYY_restart
            sed "s/XXX_RS0_XXX/$nam\_S$(($nn_spin_cycle_rst))_$rs0\_restart_ice/g" namelist_ice_cfg_template > namelist_ice_cfg
            sed "s/XXX_RS0_XXX/$nam\_S$(($nn_spin_cycle_rst))_$rs0\_restart_trc/g" namelist_top_template > namelist_top_cfg
         else
-            sed    "s/XXX_EXP_XXX/$nam/g" namelist_cfg_template_CNRM_hist > namelist_cfg
+            #sed    "s/XXX_EXP_XXX/$nam/g" namelist_cfg_template_CNRMhist > namelist_cfg
+	    if [ $y0 -le $year_end_hist ]
+            then
+                   sed    "s/XXX_EXP_XXX/$nam/g" namelist_cfg_template_CNRMhist > namelist_cfg
+              else
+                   sed    "s/XXX_EXP_XXX/$nam/g" namelist_cfg_template_CNRMssp370 > namelist_cfg
+            fi
             if [ $y0 -eq $year_st ] && [ $m0 -eq 1 ]
             then
-               sed -i "s/XXX_RS0_XXX/$nam\_S$(($nn_spin_cycle_rst))_$rs0\_restart/g" namelist_cfg  
-               sed "s/XXX_RS0_XXX/$nam\_S$(($nn_spin_cycle_rst))_$rs0\_restart_ice/g" namelist_ice_cfg_template > namelist_ice_cfg
-               sed "s/XXX_RS0_XXX/$nam\_S$(($nn_spin_cycle_rst))_$rs0\_restart_trc/g" namelist_top_template > namelist_top_cfg
+               #sed -i "s/XXX_RS0_XXX/$nam\_S$(($nn_spin_cycle_rst))_$rs0\_restart/g" namelist_cfg  
+               #sed "s/XXX_RS0_XXX/$nam\_S$(($nn_spin_cycle_rst))_$rs0\_restart_ice/g" namelist_ice_cfg_template > namelist_ice_cfg
+               #sed "s/XXX_RS0_XXX/$nam\_S$(($nn_spin_cycle_rst))_$rs0\_restart_trc/g" namelist_top_template > namelist_top_cfg
+               sed -i "s/XXX_RS0_XXX/$nam\_$rs0\_restart/g" namelist_cfg
+               sed "s/XXX_RS0_XXX/$nam\_$rs0\_restart_ice/g" namelist_ice_cfg_template > namelist_ice_cfg
+               sed "s/XXX_RS0_XXX/$nam\_$rs0\_restart_trc/g" namelist_top_template > namelist_top_cfg
             else
                sed -i "s/XXX_RS0_XXX/$nam\_$rs0\_restart/g" namelist_cfg
                sed "s/XXX_RS0_XXX/$nam\_$rs0\_restart_ice/g" namelist_ice_cfg_template > namelist_ice_cfg
@@ -414,12 +441,17 @@ do
 	        res=$y0$m0$ndays
         fi
 
+        # rename restart_trc files (put date instead of timestamp)
+	rs1=$(printf "%08d" $nn_itend)
+	rename ${rs1} ${yp}${mpstr}01 ./RESTARTS/*${rs1}*restart_trc_*.nc
+
         #prepare archive directory
         ARCHIVEDIR=$RUNDIR/$nam/$y0/$m0str/
         mkdir -p $ARCHIVEDIR
 
         # compress and archive output
-        sbatch --export=ARCHIVEDIR=$ARCHIVEDIR,y0=$y0,m0str=$m0str,SPIN=$nn_spin_cycle compress_output.slurm
+	# NB: SPIN must be >= 4 for it not to look at *_S?_*.nc files 
+        sbatch --export=ARCHIVEDIR=$ARCHIVEDIR,nam=$nam,y0=$y0,m0str=$m0str,SPIN=$nn_spin_cycle compress_output.slurm
 
         mkdir -p meta_out
         mv -f ocean.output meta_out/ocean.output.bz2.$suf
@@ -432,6 +464,7 @@ do
         # REBUILD and COMPRESS RESTART from previous 2 months
         nit_mm1=$(( 86400 * $mdays / $rn_rdt ))
         nn_itend_mm2=$(( $nn_it000 - $nit_mm1 -1 ))
+	nn_date_mm2=${ym}${mmstr}01
         echo nn_itend_mm2: $nn_itend_mm2
         # compress and rebuild 2 restarts per year (December, June), else delete
         nn_spin_cycle_rbld_rst=$nn_spin_cycle
@@ -439,12 +472,16 @@ do
         then
            nn_spin_cycle_rbld_rst=$(( nn_spin_cycle_rbld_rst - 1 ))
         fi
+	# NB NOW THE RESTRTS SHOULD COME WITH THE DATE, NOT THE TIMESTAMS, SO THESE SCRIPTS MAY NOT WORK!!!
         if [ $m0 -eq 2 ] || [ $m0 -eq 8 ]
         then
-           rbld_id=$(sbatch --parsable --export=ITER=$nn_itend_mm2,SPIN=$nn_spin_cycle_rbld_rst rebuild_restart.slurm)
-           sbatch --dependency=afterok:$rbld_id --export=ITER=$nn_itend_mm2,SPIN=$nn_spin_cycle_rbld_rst compress_restarts.slurm
+           #rbld_id=$(sbatch --parsable --export=ITER=$nn_itend_mm2,SPIN=$nn_spin_cycle_rbld_rst rebuild_restart.slurm)
+           #sbatch --dependency=afterok:$rbld_id --export=ITER=$nn_itend_mm2,SPIN=$nn_spin_cycle_rbld_rst compress_restarts.slurm
+           rbld_id=$(sbatch --parsable --export=ITER=$nn_date_mm2,SPIN=$nn_spin_cycle_rbld_rst,NAM=$nam rebuild_restart.slurm)
+           sbatch --dependency=afterok:$rbld_id --export=ITER=$nn_date_mm2,SPIN=$nn_spin_cycle_rbld_rst,NAM=$nam compress_restarts.slurm
         else
-           bash clean_restarts.sh $nn_itend_mm2 $nn_spin_cycle_rbld_rst
+           #bash clean_restarts.sh $nn_itend_mm2 $nn_spin_cycle_rbld_rst
+           bash clean_restarts.sh ${ym}${mmstr}01 $nn_spin_cycle_rbld_rst $nam
         fi
    
         # during the spin cycle rename last restart of each year so it sees it
@@ -464,9 +501,9 @@ do
        exit
     fi
 
-    echo done 1 month: >> timing_$nm.txt
-    touch timing_$nm.txt
-    ls -lhrt timing_$nm.txt >> timing_$nm.txt
+    #echo done 1 month: >> timing_$nm.txt
+    #touch timing_$nm.txt
+    #ls -lhrt timing_$nm.txt >> timing_$nm.txt
 
     y0=$yp
     m0=$mp
@@ -480,7 +517,7 @@ done
 if [ $y0 -le $year_en ]
 then
    echo 'Submitting' $y0 $m0 '...'
-   sbatch --export=y0=$y0,m0=$m0,nn_spin_cycle=$nn_spin_cycle runscript.multimonth.GS1p0_notide.slurm
+   sbatch --export=y0=$y0,m0=$m0,nn_spin_cycle=$nn_spin_cycle runscript.multimonth.GS1p0_notide.CNRMssp370.slurm
    echo "Done."
 else
    echo "All done."
